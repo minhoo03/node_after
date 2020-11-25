@@ -12,6 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.static("./public"));
 app.set('view engine', 'ejs')
+// session을 함수로 실행 : secret = salt
 app.use(session({
   secret: '($YA)@#12asd^%#',
   resave: false,
@@ -19,7 +20,8 @@ app.use(session({
 }))
 
 app.get('/', (req, res) => {
-  res.render('main', { user: { name: '김민후' } })
+  console.log(req.session.user)
+  res.render('main', { user: req.session.user })
 })
 
 app.get('/registry', (req, res) => {
@@ -28,10 +30,14 @@ app.get('/registry', (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { body: { id, pw }} = req
-  console.log(req.user)
   const epw = crypto.createHash('sha512').update(id+'lib'+pw+'salt').digest('base64')
-  const data = await User.find({ id, pw: epw })
-  res.json(data);
+  const data = await User.findOne({ id, pw: epw })
+  if (data) {
+    req.session.user = data
+    res.redirect('/')
+  } else {
+    res.send('로그인에 실패하셨습니다.')
+  }
 })
 
 app.post('/registry', (req, res) => {
@@ -43,12 +49,12 @@ app.post('/registry', (req, res) => {
 })
 
 app.get('/logout', (req, res) => {
+  delete req.session.user
   res.redirect('/')
 })
 
 app.get('/users', async (req, res) => { // find{조건, }
   const data = await User.find({})
-  console.log(123)
   res.json(data)
 })
 
