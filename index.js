@@ -26,8 +26,9 @@ app.get('/', (req, res) => {
   res.render('main', { user: req.session.user })
 })
 
-app.get('/posts', (req, res) => {
-  res.render('posts')
+app.get('/posts', async (req, res) => {
+  const posts = await Post.find()
+  res.render('posts', {posts})
 })
 
 app.get('/registry', (req, res) => {

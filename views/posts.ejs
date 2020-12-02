@@ -12,7 +12,11 @@
     <div class="post-wrap">
       <h1>게시판</h1>
       <ul>
-          <li>1</li>
+          <!-- forEach : 뽑아낸 값 하나마다 콜백함수 (전부 뽑을때까지) -->
+          <!-- 출력시 <%= %> -->
+          <% posts.forEach((post, count) => { %>
+            <li><%=count+1 %> : <%= post.title %> <%= post.createAt %></li>
+          <% }) %>
       </ul>
       <br />
       <a href='/posts/create'><button>새로운 게시물</button></a>
