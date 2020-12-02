@@ -16,6 +16,7 @@
                         <!-- 로그인 안했을 때 -->
                         <h2><%= user.name %>님 반갑습니다.</h2>
                         <a href="/logout">로그아웃</a>
+                        <a href="/posts">게시판이동</a>
                     <% } else { %>
                     <div>
                         <input type="text" class="login-form-input" name="id" placeholder="아이디" />
@@ -30,6 +31,7 @@
                     
                     <button class="login-form-submit">로그인</button>
                     <a href="/registry">회원가입</a>
+                    <a href="/posts">게시판이동</a>
                     <% } %>
                 </form>
             </div>

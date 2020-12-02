@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const session = require('express-session')
 const {User} = require('./models/User')
+const Post = require('./models/Post')
+
 require('./lib/mongoose')
 const crypto = require('crypto')
 const port = 3001;
@@ -24,8 +26,31 @@ app.get('/', (req, res) => {
   res.render('main', { user: req.session.user })
 })
 
+app.get('/posts', (req, res) => {
+  res.render('posts')
+})
+
 app.get('/registry', (req, res) => {
   res.render('registry')
+})
+
+// GET : 게시글 작성 page
+// session 없을 시...
+app.get('/posts/create', (req, res) => {
+  if(!req.session.user) return res.redirect('/')
+  res.render('createPost')
+  console.log(req.session.user)
+})
+
+// POST : page에서 작성한 data, DB에 저장
+// postman 같은 program 사용시.. 보안
+app.post('/posts', (req, res) => {
+
+  if(!req.session.user) return res.redirect('/')
+
+  const {body: { title, content} } = req
+  Post.create({title, content, writer: req.session.user._id})
+  res.redirect('/posts')
 })
 
 app.post('/login', async (req, res) => {
