@@ -15,7 +15,7 @@
           <!-- forEach : 뽑아낸 값 하나마다 콜백함수 (전부 뽑을때까지) -->
           <!-- 출력시 <%= %> -->
           <% posts.forEach((post, count) => { %>
-            <li><%=count+1 %> : <%= post.title %> <%= post.createAt %></li>
+            <a href='/posts/<%=post.id %>'><li><%=count+1 %> : <%= post.title %> <%= post.createAt %></li></a>
           <% }) %>
       </ul>
       <br />

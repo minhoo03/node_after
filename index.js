@@ -30,6 +30,14 @@ app.get('/posts', async (req, res) => {
   const posts = await Post.find()
   res.render('posts', {posts})
 })
+// :aaa 는 무슨 값이 오든 aaa라는 변수에 담음
+// req.body, query, params
+app.get('/posts/:postId', async (req, res) => {
+  const postId = req.params.postId
+  const post = await Post.findOne({_id:postId})
+  console.log(post)
+  res.send('wow')
+})
 
 app.get('/registry', (req, res) => {
   res.render('registry')
